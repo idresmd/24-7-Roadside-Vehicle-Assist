@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}RoadAssist 24/7 - Roadside Assistance{% endblock %}
+{% block content %}
+<section class="hero" id="home">
+    <div class="container">
+        <div class="hero-seal"><i class="fa-solid fa-road"></i></div>
+        <div class="hero-eyebrow">Trusted Roadside Assistance Since Day One</div>
+        <h1>24/7 Roadside Vehicle Assistance — Anytime, Anywhere</h1>
+        <p class="lead">Fast, reliable and affordable emergency roadside support, dispatched to your exact location around the clock.</p>
+        <div class="mt-4">
+            <a href="{{ url_for('services_page') }}" class="btn btn-classic-primary btn-lg mt-2 me-2"><i class="fa-solid fa-gears"></i> Get Assistance</a>
+            <a href="tel:+919876543210" class="btn btn-classic-danger btn-lg mt-2"><i class="fa-solid fa-phone-volume"></i> Call Now</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

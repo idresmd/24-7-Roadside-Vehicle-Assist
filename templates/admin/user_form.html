@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'New user' if mode == 'new' else 'Edit user' }} - Admin{% endblock %}
+{% block content %}
+<section class="container py-4 py-md-5">
+    <div class="mb-3"><div class="section-eyebrow">Admin Panel</div><h1 class="section-title h2">{{ 'New user' if mode == 'new' else 'Edit ' ~ user.name }}</h1></div>
+    {% include 'admin/_nav.html' %}
+    <div class="row"><div class="col-lg-7"><div class="card p-4">
+        {{ render_form(form, button_map={'submit': 'primary'}) }}
+        <a href="{{ url_for('admin_users') }}" class="btn btn-outline-secondary mt-2">Cancel</a>
+    </div></div></div>
+</section>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import status_badge %}
+{% block title %}Track Request - RoadAssist 24/7{% endblock %}
+{% block content %}
+<section class="container py-5"><div class="text-center mb-5 pt-3"><div class="section-eyebrow">Request Tracking</div><h1 class="section-title">Track Your Request</h1><div class="section-divider"></div></div>
+<div class="row justify-content-center"><div class="col-md-7"><div class="card p-4 shadow-sm">{{ render_form(form) }}
+{% if result %}<div class="alert alert-success mt-4"><strong>Request ID:</strong> {{ result.id }}<br><strong>Service:</strong> {{ result.service }}<br><strong>Created:</strong> {{ result.createdAt }}<br><strong>Status:</strong> {{ status_badge(result.status) }}</div>{% endif %}
+</div></div></div></section>
+{% endblock %}

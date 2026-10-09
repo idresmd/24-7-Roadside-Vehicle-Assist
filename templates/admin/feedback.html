@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/pagination.html' import render_pagination %}
+{% from '_macros.html' import delete_form %}
+{% block title %}Feedback - Admin{% endblock %}
+{% block content %}
+<section class="container py-4 py-md-5">
+    <div class="mb-3"><div class="section-eyebrow">Admin Panel</div><h1 class="section-title h2">Feedback</h1></div>
+    {% include 'admin/_nav.html' %}
+    {% for f in page.items %}
+    <div class="card p-3 mb-3">
+        <div class="d-flex justify-content-between flex-wrap gap-2"><div><strong>{{ f.name }}</strong> <small class="text-muted">({{ f.email }})</small><br><span class="text-warning">{{ '★' * f.rating }}{{ '☆' * (5 - f.rating) }}</span> <small class="text-muted">{{ f.category }} &middot; {{ f.created_at.strftime('%Y-%m-%d') }}</small></div>
+            <div>{{ delete_form(url_for('admin_feedback_delete', feedback_id=f.id), 'Delete this feedback?') }}</div></div>
+        <p class="mb-0 mt-2">{{ f.feedback }}</p>
+    </div>
+    {% else %}<div class="alert alert-info">No feedback yet.</div>{% endfor %}
+    <div class="mt-3 d-flex justify-content-center">{{ render_pagination(page, endpoint='admin_feedback') }}</div>
+</section>
+{% endblock %}

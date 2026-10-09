@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import status_badge, delete_form %}
+{% block title %}{{ item.id }} - Admin{% endblock %}
+{% block content %}
+<section class="container py-4 py-md-5">
+    <div class="mb-3"><div class="section-eyebrow">Admin Panel</div><h1 class="section-title h2">Request {{ item.id }}</h1></div>
+    {% include 'admin/_nav.html' %}
+    <div class="row g-4">
+        <div class="col-lg-7"><div class="card p-3">
+            <dl class="row mb-3">
+                <dt class="col-sm-4">Service</dt><dd class="col-sm-8">{{ item.service }}</dd>
+                <dt class="col-sm-4">Status</dt><dd class="col-sm-8">{{ status_badge(item.status) }}</dd>
+                <dt class="col-sm-4">Created</dt><dd class="col-sm-8">{{ item.createdAt }}</dd>
+                <dt class="col-sm-4">Customer</dt><dd class="col-sm-8 mb-0">{% if item.user %}<a href="{{ url_for('admin_user_detail', user_id=item.user.id) }}">{{ item.user.name }}</a> ({{ item.email }}){% else %}{{ item.details.get('name') or 'Guest' }}{% endif %}</dd>
+            </dl>
+            <h5>Details</h5>
+            <div class="table-responsive"><table class="table table-sm details-table mb-0"><tbody>
+                {% for key, value in item.details.items() %}<tr><th>{{ key.replace('_', ' ')|title }}</th><td>{{ value }}</td></tr>{% endfor %}
+            </tbody></table></div>
+        </div></div>
+        <div class="col-lg-5">
+            <div class="card p-3 mb-3"><h5>Update status</h5>{{ render_form(form, button_map={'submit': 'primary'}) }}</div>
+            <div class="d-flex flex-wrap gap-2"><a href="{{ url_for('admin_requests') }}" class="btn btn-sm btn-outline-secondary">Back to requests</a>
+                {{ delete_form(url_for('admin_request_delete', request_id=item.id), 'Delete this request permanently?') }}</div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% set ep = request.endpoint or '' %}
+<ul class="nav nav-pills admin-nav mb-4 flex-nowrap">
+    <li class="nav-item"><a class="nav-link {{ 'active' if ep == 'admin_dashboard' }}" href="{{ url_for('admin_dashboard') }}"><i class="fa-solid fa-chart-line"></i> Overview</a></li>
+    <li class="nav-item"><a class="nav-link {{ 'active' if ep.startswith('admin_user') }}" href="{{ url_for('admin_users') }}"><i class="fa-solid fa-users"></i> Users</a></li>
+    <li class="nav-item"><a class="nav-link {{ 'active' if ep.startswith('admin_request') }}" href="{{ url_for('admin_requests') }}"><i class="fa-solid fa-truck-fast"></i> Requests</a></li>
+    <li class="nav-item"><a class="nav-link {{ 'active' if ep.startswith('admin_feedback') }}" href="{{ url_for('admin_feedback') }}"><i class="fa-solid fa-comment-dots"></i> Feedback</a></li>
+</ul>

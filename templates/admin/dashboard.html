@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import status_badge %}
+{% block title %}Admin - RoadAssist 24/7{% endblock %}
+{% block content %}
+<section class="container py-4 py-md-5">
+    <div class="mb-3"><div class="section-eyebrow">Admin Panel</div><h1 class="section-title h2">Overview</h1></div>
+    {% include 'admin/_nav.html' %}
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3"><a class="text-decoration-none" href="{{ url_for('admin_users') }}"><div class="card stat-card p-3"><small>Users</small><strong>{{ total_users }}</strong></div></a></div>
+        <div class="col-6 col-lg-3"><a class="text-decoration-none" href="{{ url_for('admin_requests') }}"><div class="card stat-card p-3"><small>Requests</small><strong>{{ total_requests }}</strong></div></a></div>
+        <div class="col-6 col-lg-3"><a class="text-decoration-none" href="{{ url_for('admin_feedback') }}"><div class="card stat-card p-3"><small>Feedback</small><strong>{{ total_feedback }}</strong></div></a></div>
+        <div class="col-6 col-lg-3"><div class="card stat-card p-3"><small>Avg. rating</small><strong>{{ '%.1f'|format(average_rating) if average_rating else '–' }}</strong></div></div>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-md-6"><div class="card p-3 h-100"><h5>Requests by status</h5>
+            <ul class="list-unstyled mb-0">{% for st in statuses %}<li class="d-flex justify-content-between py-1"><a href="{{ url_for('admin_requests', status=st) }}">{{ status_badge(st) }}</a><strong>{{ by_status.get(st, 0) }}</strong></li>{% endfor %}</ul></div></div>
+        <div class="col-md-6"><div class="card p-3 h-100"><h5>Requests by service</h5>
+            {% if by_service %}<ul class="list-unstyled mb-0">{% for name, count in by_service %}<li class="d-flex justify-content-between py-1"><a href="{{ url_for('admin_requests', service=name) }}">{{ name }}</a><strong>{{ count }}</strong></li>{% endfor %}</ul>{% else %}<p class="text-muted mb-0">No requests yet.</p>{% endif %}</div></div>
+    </div>
+    <div class="card p-3"><div class="d-flex justify-content-between align-items-center mb-2"><h5 class="mb-0">Recent requests</h5><a href="{{ url_for('admin_requests') }}" class="small">View all</a></div>
+        {% if recent %}<div class="table-responsive"><table class="table table-hover align-middle mb-0">
+            <thead><tr><th>ID</th><th>Service</th><th>Customer</th><th>Status</th><th>Created</th></tr></thead>
+            <tbody>{% for r in recent %}<tr><td><a href="{{ url_for('admin_request_detail', request_id=r.id) }}">{{ r.id }}</a></td><td>{{ r.service }}</td><td>{{ r.user.name if r.user else (r.details.get('name') or 'Guest') }}</td><td>{{ status_badge(r.status) }}</td><td class="text-nowrap">{{ r.createdAt }}</td></tr>{% endfor %}</tbody>
+        </table></div>{% else %}<p class="text-muted mb-0">No requests yet.</p>{% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% macro status_badge(status) %}
+{% set colors = {'Received': 'secondary', 'Dispatched': 'info', 'In Progress': 'warning', 'Completed': 'success', 'Cancelled': 'danger'} %}
+<span class="badge text-bg-{{ colors.get(status, 'secondary') }}">{{ status }}</span>
+{% endmacro %}
+
+{% macro delete_form(action, message, label='Delete') %}
+<form method="post" action="{{ action }}" class="d-inline" onsubmit="return confirm('{{ message }}')">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i> {{ label }}</button>
+</form>
+{% endmacro %}

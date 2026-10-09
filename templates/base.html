@@ -1,0 +1,45 @@
+{% from 'bootstrap5/form.html' import render_form %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#16233F">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>{% block title %}RoadAssist 24/7{% endblock %}</title>
+    {{ bootstrap.load_css() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800;900&family=PT+Sans:wght@400;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+{% include 'navbar.html' %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container pt-3 flash-wrap">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+{% block content %}{% endblock %}
+
+<footer class="py-5">
+    <div class="container text-center pt-4">
+        <h4><i class="fa-solid fa-road" style="color: var(--gold-light);"></i> RoadAssist 24/7</h4>
+        <p>Emergency Roadside Assistance Anytime, Anywhere.</p>
+        <p class="small mb-0">&copy; 2026 RoadAssist. All Rights Reserved.</p>
+    </div>
+</footer>
+<a href="tel:+919876543210" class="floating-call" title="Call RoadAssist"><i class="fa-solid fa-phone-volume"></i></a>
+{{ bootstrap.load_js() }}
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Services - RoadAssist 24/7{% endblock %}
+{% block content %}
+<section class="container py-5" id="services">
+    <div class="text-center mb-5 pt-3"><div class="section-eyebrow">What We Offer</div><h2 class="section-title">Our Services</h2><p class="text-muted mt-2">Select a service below and provide the required information.</p><div class="section-divider"></div></div>
+    <div class="row g-4">
+    {% set cards = [
+      ('towing','fa-truck-fast','Vehicle Towing','Professional towing for breakdowns, accidents and vehicle recovery.','Request Towing'),
+      ('fuel','fa-gas-pump','Fuel Delivery','Emergency fuel delivered directly to your location.','Request Fuel'),
+      ('tire','fa-circle-dot','Flat Tire','Tire repair, replacement and roadside tire assistance.','Request Tire Help'),
+      ('lockout','fa-key','Lockout Service','Get assistance when your keys are locked inside your vehicle.','Request Lockout'),
+      ('repair','fa-gears','Minor Repairs','On-site assistance for minor vehicle mechanical problems.','Request Repair'),
+      ('battery','fa-battery-full','Battery Jump Start','Quick battery jump-start assistance at your location.','Request Battery Help')
+    ] %}
+    {% for key, icon, title, text, button in cards %}
+    <div class="col-md-4"><div class="card service-card text-center p-4"><div class="service-icon"><i class="fa-solid {{ icon }}"></i></div><h4 class="mt-3">{{ title }}</h4><p>{{ text }}</p><a class="btn btn-outline-classic mt-2" href="{{ url_for('service_request', service_key=key) }}">{{ button }}</a></div></div>
+    {% endfor %}
+    </div>
+</section>
+{% endblock %}

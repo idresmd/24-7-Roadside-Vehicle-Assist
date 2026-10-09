@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}{{ service_name }} Request - RoadAssist 24/7{% endblock %}
+{% block content %}
+<section class="container py-5"><div class="text-center mb-5 pt-3"><div class="section-eyebrow">RoadAssist 24/7</div><h1 class="section-title">{{ service_name }} Request</h1><div class="section-divider"></div></div>
+<div class="row justify-content-center"><div class="col-lg-10"><div class="card shadow-sm">
+    <div class="card-header modal-header"><h5 class="modal-title"><i class="fa-solid fa-truck-fast"></i> {{ service_name }}</h5></div>
+    <div class="card-body p-4">
+        <div class="alert alert-info small d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span><i class="fa-solid fa-user"></i> {{ current_user.name }} &middot; {{ current_user.phone }} &middot; {{ current_user.vehicle_type }} {{ current_user.vehicle_number }}</span>
+            <a href="{{ url_for('profile', next=request.path) }}">Not right? Edit profile</a>
+        </div>
+        {{ render_form(form, enctype='multipart/form-data', button_map={'submit': 'primary'}) }}
+    </div>
+</div></div></div></section>
+{% endblock %}

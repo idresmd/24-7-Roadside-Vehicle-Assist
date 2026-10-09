@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import status_badge, delete_form %}
+{% block title %}{{ user.name }} - Admin{% endblock %}
+{% block content %}
+<section class="container py-4 py-md-5">
+    <div class="mb-3"><div class="section-eyebrow">Admin Panel</div><h1 class="section-title h2">{{ user.name }}</h1></div>
+    {% include 'admin/_nav.html' %}
+    <div class="card p-3 mb-4">
+        <dl class="row mb-3">
+            <dt class="col-sm-3">Email</dt><dd class="col-sm-9">{{ user.email }}</dd>
+            <dt class="col-sm-3">Phone</dt><dd class="col-sm-9">{{ user.phone }}</dd>
+            <dt class="col-sm-3">Vehicle</dt><dd class="col-sm-9">{{ user.vehicle_type or '–' }} {{ user.vehicle_number or '' }}</dd>
+            <dt class="col-sm-3">Role</dt><dd class="col-sm-9">{{ 'Admin' if user.is_admin else 'User' }}</dd>
+            <dt class="col-sm-3">Joined</dt><dd class="col-sm-9 mb-0">{{ user.created_at.strftime('%Y-%m-%d') }}</dd>
+        </dl>
+        <div class="d-flex flex-wrap gap-2"><a href="{{ url_for('admin_user_edit', user_id=user.id) }}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-pen"></i> Edit</a>
+            {% if user.id != current_user.id %}{{ delete_form(url_for('admin_user_delete', user_id=user.id), 'Delete this user? Their requests are kept.') }}{% endif %}
+            <a href="{{ url_for('admin_users') }}" class="btn btn-sm btn-outline-secondary">Back to users</a></div>
+    </div>
+    <h4>Service requests ({{ user_requests|length }})</h4>
+    {% if user_requests %}<div class="card p-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0">
+        <thead><tr><th>ID</th><th>Service</th><th>Status</th><th>Created</th></tr></thead>
+        <tbody>{% for r in user_requests %}<tr><td><a href="{{ url_for('admin_request_detail', request_id=r.id) }}">{{ r.id }}</a></td><td>{{ r.service }}</td><td>{{ status_badge(r.status) }}</td><td class="text-nowrap">{{ r.createdAt }}</td></tr>{% endfor %}</tbody>
+    </table></div></div>{% else %}<div class="alert alert-info">No requests from this user.</div>{% endif %}
+</section>
+{% endblock %}

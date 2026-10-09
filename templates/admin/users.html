@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/pagination.html' import render_pagination %}
+{% from '_macros.html' import delete_form %}
+{% block title %}Users - Admin{% endblock %}
+{% block content %}
+<section class="container py-4 py-md-5">
+    <div class="mb-3"><div class="section-eyebrow">Admin Panel</div><h1 class="section-title h2">Users</h1></div>
+    {% include 'admin/_nav.html' %}
+    <div class="d-flex flex-column flex-md-row gap-2 mb-3">
+        <form method="get" class="d-flex gap-2 flex-grow-1"><input type="search" name="q" value="{{ search }}" class="form-control" placeholder="Search name, email, phone or vehicle number"><button class="btn btn-primary w-auto">Search</button></form>
+        <a href="{{ url_for('admin_user_new') }}" class="btn btn-classic-primary"><i class="fa-solid fa-plus"></i> New user</a>
+    </div>
+    <div class="card p-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0">
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Vehicle</th><th>Role</th><th class="text-end">Actions</th></tr></thead>
+        <tbody>
+        {% for u in page.items %}
+        <tr><td><a href="{{ url_for('admin_user_detail', user_id=u.id) }}">{{ u.name }}</a></td><td>{{ u.email }}</td><td class="text-nowrap">{{ u.phone }}</td>
+            <td class="text-nowrap">{{ u.vehicle_type or '–' }} {{ u.vehicle_number or '' }}</td>
+            <td>{% if u.is_admin %}<span class="badge text-bg-dark">Admin</span>{% else %}<span class="badge text-bg-light border">User</span>{% endif %}</td>
+            <td class="text-end text-nowrap"><a href="{{ url_for('admin_user_edit', user_id=u.id) }}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-pen"></i> Edit</a>
+                {% if u.id != current_user.id %}{{ delete_form(url_for('admin_user_delete', user_id=u.id), 'Delete this user? Their requests are kept.') }}{% endif %}</td></tr>
+        {% else %}<tr><td colspan="6" class="text-center text-muted py-4">No users found.</td></tr>
+        {% endfor %}
+        </tbody></table></div></div>
+    <div class="mt-3 d-flex justify-content-center">{{ render_pagination(page, endpoint='admin_users', q=search) }}</div>
+</section>
+{% endblock %}

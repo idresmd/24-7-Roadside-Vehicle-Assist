@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import status_badge %}
+{% block title %}Dashboard - RoadAssist 24/7{% endblock %}
+{% block content %}
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <div class="section-eyebrow">RoadAssist 24/7</div>
+        <h1 class="section-title">Welcome, {{ current_user.name }}</h1>
+        <div class="section-divider"></div>
+        <p class="text-muted mt-3 mb-2">{{ current_user.vehicle_type or 'Vehicle not set' }}{% if current_user.vehicle_number %} &middot; {{ current_user.vehicle_number }}{% endif %} &middot; {{ current_user.phone }}</p>
+        <a href="{{ url_for('profile') }}" class="btn btn-sm btn-outline-classic"><i class="fa-solid fa-pen"></i> Edit Profile</a>
+        {% if current_user.is_admin %}<a href="{{ url_for('admin_dashboard') }}" class="btn btn-sm btn-outline-classic"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>{% endif %}
+    </div>
+    <div class="row g-4 mb-4">
+        <div class="col-md-4"><div class="card service-card p-4 text-center"><i class="fa-solid fa-phone-volume fs-1 mb-3"></i><h4>Emergency Assistance</h4><a href="{{ url_for('services_page') }}" class="btn btn-outline-classic">Request Service</a></div></div>
+        <div class="col-md-4"><div class="card service-card p-4 text-center"><i class="fa-solid fa-location-dot fs-1 mb-3"></i><h4>Track Request</h4><a href="{{ url_for('track_form') }}" class="btn btn-outline-classic">Track</a></div></div>
+        <div class="col-md-4"><div class="card service-card p-4 text-center"><i class="fa-solid fa-comment-dots fs-1 mb-3"></i><h4>Feedback</h4><a href="{{ url_for('feedback') }}" class="btn btn-outline-classic">Give Feedback</a></div></div>
+    </div>
+    <h3 class="mb-3">My Requests</h3>
+    {% if requests %}
+        {% for item in requests %}
+        <a href="{{ url_for('track_request', request_id=item.id) }}" class="text-decoration-none text-reset">
+            <div class="card p-3 mb-3 request-item"><strong>{{ item.service }}</strong><span>Request ID: {{ item.id }}</span>{{ status_badge(item.status) }}<small class="text-muted">{{ item.createdAt }}</small></div>
+        </a>
+        {% endfor %}
+    {% else %}<div class="alert alert-info">No service requests yet.</div>{% endif %}
+</section>
+{% endblock %}
